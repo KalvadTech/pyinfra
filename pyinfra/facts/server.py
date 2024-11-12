@@ -330,16 +330,9 @@ class OsRelease(FactBase):
         items = {}
 
         for line in output:
-            if "=" not in line:
-                continue
-
-            key, value = line.split("=", 1)
-            key = key.strip().lower()
-
-            value = value.strip()
-            value = value.strip('"')
-
-            items[key] = value
+            if "=" in line:
+                key, value = line.split("=", 1)
+                items[key.strip().lower()] = value.strip().strip('"')
 
         return items
 
