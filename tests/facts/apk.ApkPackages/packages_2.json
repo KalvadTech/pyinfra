@@ -1,5 +1,5 @@
 {
-    "command": "apk list --installed",
+    "command": "apk list --installed && echo '---SEPARATOR---' && apk list -u",
     "requires_command": "apk",
     "output": [
         "acct-6.6.4-r2 x86_64 {acct} (GPL-3.0-or-later) [installed]",
@@ -143,434 +143,719 @@
         "xz-libs-5.6.2-r0 x86_64 {xz} (GPL-2.0-or-later AND 0BSD AND Public-Domain AND LGPL-2.1-or-later) [installed]",
         "yaml-0.2.5-r2 x86_64 {yaml} (MIT) [installed]",
         "zlib-1.3.1-r1 x86_64 {zlib} (Zlib) [installed]",
-        "zstd-libs-1.5.6-r0 x86_64 {zstd} (BSD-3-Clause OR GPL-2.0-or-later) [installed]"
+        "zstd-libs-1.5.6-r0 x86_64 {zstd} (BSD-3-Clause OR GPL-2.0-or-later) [installed]",
+        "---SEPARATOR---"
     ],
     "fact": {
-        "acct": [
-            "6.6.4-r2"
-        ],
-        "acct-openrc": [
-            "6.6.4-r2"
-        ],
-        "alpine-baselayout": [
-            "3.6.5-r0"
-        ],
-        "alpine-baselayout-data": [
-            "3.6.5-r0"
-        ],
-        "alpine-keys": [
-            "2.4-r1"
-        ],
-        "apk-tools": [
-            "2.14.4-r0"
-        ],
-        "argon2-libs": [
-            "20190702-r5"
-        ],
-        "blkid": [
-            "2.40.1-r1"
-        ],
-        "busybox": [
-            "1.36.1-r29"
-        ],
-        "busybox-binsh": [
-            "1.36.1-r29"
-        ],
-        "busybox-openrc": [
-            "1.36.1-r29"
-        ],
-        "ca-certificates": [
-            "20240705-r0"
-        ],
-        "ca-certificates-bundle": [
-            "20240705-r0"
-        ],
-        "chrony": [
-            "4.5-r0"
-        ],
-        "chrony-openrc": [
-            "4.5-r0"
-        ],
-        "coreutils": [
-            "9.5-r1"
-        ],
-        "coreutils-env": [
-            "9.5-r1"
-        ],
-        "coreutils-fmt": [
-            "9.5-r1"
-        ],
-        "coreutils-sha512sum": [
-            "9.5-r1"
-        ],
-        "cryptsetup-libs": [
-            "2.7.2-r0"
-        ],
-        "device-mapper-event-libs": [
-            "2.03.23-r3"
-        ],
-        "device-mapper-libs": [
-            "2.03.23-r3"
-        ],
-        "gdbm": [
-            "1.23-r1"
-        ],
-        "gmp": [
-            "6.3.0-r1"
-        ],
-        "gnutls": [
-            "3.8.5-r0"
-        ],
-        "http-parser": [
-            "2.9.4-r0"
-        ],
-        "ifupdown-ng": [
-            "0.12.1-r5"
-        ],
-        "json-c": [
-            "0.17-r0"
-        ],
-        "kmod": [
-            "32-r0"
-        ],
-        "kmod-libs": [
-            "32-r0"
-        ],
-        "lddtree": [
-            "1.27-r0"
-        ],
-        "less": [
-            "643-r2"
-        ],
-        "libacl": [
-            "2.3.2-r0"
-        ],
-        "libattr": [
-            "2.5.2-r0"
-        ],
-        "libblkid": [
-            "2.40.1-r1"
-        ],
-        "libbz2": [
-            "1.0.8-r6"
-        ],
-        "libcap2": [
-            "2.70-r0"
-        ],
-        "libcrypto3": [
-            "3.3.2-r0"
-        ],
-        "libeconf": [
-            "0.6.3-r0"
-        ],
-        "libedit": [
-            "20240517.3.1-r0"
-        ],
-        "libexpat": [
-            "2.6.3-r0"
-        ],
-        "libffi": [
-            "3.4.6-r0"
-        ],
-        "libgcc": [
-            "13.2.1_git20240309-r0"
-        ],
-        "libgit2": [
-            "1.7.2-r0"
-        ],
-        "libidn2": [
-            "2.3.7-r0"
-        ],
-        "libintl": [
-            "0.22.5-r0"
-        ],
-        "libncursesw": [
-            "6.4_p20240420-r1"
-        ],
-        "libpanelw": [
-            "6.4_p20240420-r1"
-        ],
-        "libproc2": [
-            "4.0.4-r0"
-        ],
-        "libseccomp": [
-            "2.5.5-r1"
-        ],
-        "libsodium": [
-            "1.0.19-r0"
-        ],
-        "libssh2": [
-            "1.11.0-r2"
-        ],
-        "libssl3": [
-            "3.3.2-r0"
-        ],
-        "libstdc++": [
-            "13.2.1_git20240309-r0"
-        ],
-        "libtasn1": [
-            "4.19.0-r2"
-        ],
-        "libunistring": [
-            "1.2-r0"
-        ],
-        "libuuid": [
-            "2.40.1-r1"
-        ],
-        "libzmq": [
-            "4.3.5-r2"
-        ],
-        "linux-firmware-none": [
-            "20240811-r0"
-        ],
-        "mdev-conf": [
-            "4.7-r0"
-        ],
-        "mkinitfs": [
-            "3.10.1-r0"
-        ],
-        "mpdecimal": [
-            "4.0.0-r0"
-        ],
-        "mtools": [
-            "4.0.43-r1"
-        ],
-        "musl": [
-            "1.2.5-r0"
-        ],
-        "musl-utils": [
-            "1.2.5-r0"
-        ],
-        "ncurses-terminfo-base": [
-            "6.4_p20240420-r1"
-        ],
-        "nettle": [
-            "3.9.1-r0"
-        ],
-        "openrc": [
-            "0.54-r1"
-        ],
-        "openssh-client-common": [
-            "9.7_p1-r4"
-        ],
-        "openssh-keygen": [
-            "9.7_p1-r4"
-        ],
-        "openssh-server": [
-            "9.7_p1-r4"
-        ],
-        "openssh-server-common": [
-            "9.7_p1-r4"
-        ],
-        "openssh-server-common-openrc": [
-            "9.7_p1-r4"
-        ],
-        "p11-kit": [
-            "0.25.3-r0"
-        ],
-        "pcre2": [
-            "10.43-r0"
-        ],
-        "procps-ng": [
-            "4.0.4-r0"
-        ],
-        "py3-cached-property": [
-            "1.5.2-r5"
-        ],
-        "py3-cached-property-pyc": [
-            "1.5.2-r5"
-        ],
-        "py3-certifi": [
-            "2024.2.2-r1"
-        ],
-        "py3-certifi-pyc": [
-            "2024.2.2-r1"
-        ],
-        "py3-cffi": [
-            "1.16.0-r1"
-        ],
-        "py3-cffi-pyc": [
-            "1.16.0-r1"
-        ],
-        "py3-charset-normalizer": [
-            "3.3.2-r1"
-        ],
-        "py3-charset-normalizer-pyc": [
-            "3.3.2-r1"
-        ],
-        "py3-cparser": [
-            "2.22-r1"
-        ],
-        "py3-cparser-pyc": [
-            "2.22-r1"
-        ],
-        "py3-dateutil": [
-            "2.9.0-r1"
-        ],
-        "py3-dateutil-pyc": [
-            "2.9.0-r1"
-        ],
-        "py3-distro": [
-            "1.9.0-r2"
-        ],
-        "py3-distro-pyc": [
-            "1.9.0-r2"
-        ],
-        "py3-idna": [
-            "3.7-r0"
-        ],
-        "py3-idna-pyc": [
-            "3.7-r0"
-        ],
-        "py3-jinja2": [
-            "3.1.4-r0"
-        ],
-        "py3-jinja2-pyc": [
-            "3.1.4-r0"
-        ],
-        "py3-jmespath": [
-            "1.0.1-r3"
-        ],
-        "py3-jmespath-pyc": [
-            "1.0.1-r3"
-        ],
-        "py3-looseversion": [
-            "1.3.0-r3"
-        ],
-        "py3-looseversion-pyc": [
-            "1.3.0-r3"
-        ],
-        "py3-markupsafe": [
-            "2.1.5-r1"
-        ],
-        "py3-markupsafe-pyc": [
-            "2.1.5-r1"
-        ],
-        "py3-msgpack": [
-            "1.0.8-r1"
-        ],
-        "py3-msgpack-pyc": [
-            "1.0.8-r1"
-        ],
-        "py3-packaging": [
-            "24.0-r1"
-        ],
-        "py3-packaging-pyc": [
-            "24.0-r1"
-        ],
-        "py3-parsing": [
-            "3.1.2-r1"
-        ],
-        "py3-parsing-pyc": [
-            "3.1.2-r1"
-        ],
-        "py3-psutil": [
-            "5.9.8-r1"
-        ],
-        "py3-psutil-pyc": [
-            "5.9.8-r1"
-        ],
-        "py3-pycryptodomex": [
-            "3.20.0-r1"
-        ],
-        "py3-pygit2": [
-            "1.14.1-r1"
-        ],
-        "py3-pygit2-pyc": [
-            "1.14.1-r1"
-        ],
-        "py3-pyzmq": [
-            "25.1.2-r1"
-        ],
-        "py3-pyzmq-pyc": [
-            "25.1.2-r1"
-        ],
-        "py3-requests": [
-            "2.32.3-r0"
-        ],
-        "py3-requests-pyc": [
-            "2.32.3-r0"
-        ],
-        "py3-six": [
-            "1.16.0-r9"
-        ],
-        "py3-six-pyc": [
-            "1.16.0-r9"
-        ],
-        "py3-tornado": [
-            "6.4-r2"
-        ],
-        "py3-tornado-pyc": [
-            "6.4-r2"
-        ],
-        "py3-urllib3": [
-            "1.26.18-r1"
-        ],
-        "py3-urllib3-pyc": [
-            "1.26.18-r1"
-        ],
-        "py3-yaml": [
-            "6.0.1-r3"
-        ],
-        "py3-yaml-pyc": [
-            "6.0.1-r3"
-        ],
-        "pyc": [
-            "3.12.7-r0"
-        ],
-        "python3": [
-            "3.12.7-r0"
-        ],
-        "python3-pyc": [
-            "3.12.7-r0"
-        ],
-        "python3-pycache-pyc0": [
-            "3.12.7-r0"
-        ],
-        "readline": [
-            "8.2.10-r0"
-        ],
-        "salt": [
-            "3007.0-r4"
-        ],
-        "salt-minion": [
-            "3007.0-r4"
-        ],
-        "salt-minion-openrc": [
-            "3007.0-r4"
-        ],
-        "salt-pyc": [
-            "3007.0-r4"
-        ],
-        "scanelf": [
-            "1.3.7-r2"
-        ],
-        "skalibs": [
-            "2.14.1.1-r0"
-        ],
-        "sqlite-libs": [
-            "3.45.3-r1"
-        ],
-        "ssl_client": [
-            "1.36.1-r29"
-        ],
-        "syslinux": [
-            "6.04_pre1-r15"
-        ],
-        "utmps-libs": [
-            "0.1.2.2-r1"
-        ],
-        "xz-libs": [
-            "5.6.2-r0"
-        ],
-        "yaml": [
-            "0.2.5-r2"
-        ],
-        "zlib": [
-            "1.3.1-r1"
-        ],
-        "zstd-libs": [
-            "1.5.6-r0"
-        ]
+        "acct": {
+            "status": "installed",
+            "version_installed": "6.6.4-r2",
+            "version_available": null
+        },
+        "acct-openrc": {
+            "status": "installed",
+            "version_installed": "6.6.4-r2",
+            "version_available": null
+        },
+        "alpine-baselayout": {
+            "status": "installed",
+            "version_installed": "3.6.5-r0",
+            "version_available": null
+        },
+        "alpine-baselayout-data": {
+            "status": "installed",
+            "version_installed": "3.6.5-r0",
+            "version_available": null
+        },
+        "alpine-keys": {
+            "status": "installed",
+            "version_installed": "2.4-r1",
+            "version_available": null
+        },
+        "apk-tools": {
+            "status": "installed",
+            "version_installed": "2.14.4-r0",
+            "version_available": null
+        },
+        "argon2-libs": {
+            "status": "installed",
+            "version_installed": "20190702-r5",
+            "version_available": null
+        },
+        "blkid": {
+            "status": "installed",
+            "version_installed": "2.40.1-r1",
+            "version_available": null
+        },
+        "busybox": {
+            "status": "installed",
+            "version_installed": "1.36.1-r29",
+            "version_available": null
+        },
+        "busybox-binsh": {
+            "status": "installed",
+            "version_installed": "1.36.1-r29",
+            "version_available": null
+        },
+        "busybox-openrc": {
+            "status": "installed",
+            "version_installed": "1.36.1-r29",
+            "version_available": null
+        },
+        "ca-certificates": {
+            "status": "installed",
+            "version_installed": "20240705-r0",
+            "version_available": null
+        },
+        "ca-certificates-bundle": {
+            "status": "installed",
+            "version_installed": "20240705-r0",
+            "version_available": null
+        },
+        "chrony": {
+            "status": "installed",
+            "version_installed": "4.5-r0",
+            "version_available": null
+        },
+        "chrony-openrc": {
+            "status": "installed",
+            "version_installed": "4.5-r0",
+            "version_available": null
+        },
+        "coreutils": {
+            "status": "installed",
+            "version_installed": "9.5-r1",
+            "version_available": null
+        },
+        "coreutils-env": {
+            "status": "installed",
+            "version_installed": "9.5-r1",
+            "version_available": null
+        },
+        "coreutils-fmt": {
+            "status": "installed",
+            "version_installed": "9.5-r1",
+            "version_available": null
+        },
+        "coreutils-sha512sum": {
+            "status": "installed",
+            "version_installed": "9.5-r1",
+            "version_available": null
+        },
+        "cryptsetup-libs": {
+            "status": "installed",
+            "version_installed": "2.7.2-r0",
+            "version_available": null
+        },
+        "device-mapper-event-libs": {
+            "status": "installed",
+            "version_installed": "2.03.23-r3",
+            "version_available": null
+        },
+        "device-mapper-libs": {
+            "status": "installed",
+            "version_installed": "2.03.23-r3",
+            "version_available": null
+        },
+        "gdbm": {
+            "status": "installed",
+            "version_installed": "1.23-r1",
+            "version_available": null
+        },
+        "gmp": {
+            "status": "installed",
+            "version_installed": "6.3.0-r1",
+            "version_available": null
+        },
+        "gnutls": {
+            "status": "installed",
+            "version_installed": "3.8.5-r0",
+            "version_available": null
+        },
+        "http-parser": {
+            "status": "installed",
+            "version_installed": "2.9.4-r0",
+            "version_available": null
+        },
+        "ifupdown-ng": {
+            "status": "installed",
+            "version_installed": "0.12.1-r5",
+            "version_available": null
+        },
+        "json-c": {
+            "status": "installed",
+            "version_installed": "0.17-r0",
+            "version_available": null
+        },
+        "kmod": {
+            "status": "installed",
+            "version_installed": "32-r0",
+            "version_available": null
+        },
+        "kmod-libs": {
+            "status": "installed",
+            "version_installed": "32-r0",
+            "version_available": null
+        },
+        "lddtree": {
+            "status": "installed",
+            "version_installed": "1.27-r0",
+            "version_available": null
+        },
+        "less": {
+            "status": "installed",
+            "version_installed": "643-r2",
+            "version_available": null
+        },
+        "libacl": {
+            "status": "installed",
+            "version_installed": "2.3.2-r0",
+            "version_available": null
+        },
+        "libattr": {
+            "status": "installed",
+            "version_installed": "2.5.2-r0",
+            "version_available": null
+        },
+        "libblkid": {
+            "status": "installed",
+            "version_installed": "2.40.1-r1",
+            "version_available": null
+        },
+        "libbz2": {
+            "status": "installed",
+            "version_installed": "1.0.8-r6",
+            "version_available": null
+        },
+        "libcap2": {
+            "status": "installed",
+            "version_installed": "2.70-r0",
+            "version_available": null
+        },
+        "libcrypto3": {
+            "status": "installed",
+            "version_installed": "3.3.2-r0",
+            "version_available": null
+        },
+        "libeconf": {
+            "status": "installed",
+            "version_installed": "0.6.3-r0",
+            "version_available": null
+        },
+        "libedit": {
+            "status": "installed",
+            "version_installed": "20240517.3.1-r0",
+            "version_available": null
+        },
+        "libexpat": {
+            "status": "installed",
+            "version_installed": "2.6.3-r0",
+            "version_available": null
+        },
+        "libffi": {
+            "status": "installed",
+            "version_installed": "3.4.6-r0",
+            "version_available": null
+        },
+        "libgcc": {
+            "status": "installed",
+            "version_installed": "13.2.1_git20240309-r0",
+            "version_available": null
+        },
+        "libgit2": {
+            "status": "installed",
+            "version_installed": "1.7.2-r0",
+            "version_available": null
+        },
+        "libidn2": {
+            "status": "installed",
+            "version_installed": "2.3.7-r0",
+            "version_available": null
+        },
+        "libintl": {
+            "status": "installed",
+            "version_installed": "0.22.5-r0",
+            "version_available": null
+        },
+        "libncursesw": {
+            "status": "installed",
+            "version_installed": "6.4_p20240420-r1",
+            "version_available": null
+        },
+        "libpanelw": {
+            "status": "installed",
+            "version_installed": "6.4_p20240420-r1",
+            "version_available": null
+        },
+        "libproc2": {
+            "status": "installed",
+            "version_installed": "4.0.4-r0",
+            "version_available": null
+        },
+        "libseccomp": {
+            "status": "installed",
+            "version_installed": "2.5.5-r1",
+            "version_available": null
+        },
+        "libsodium": {
+            "status": "installed",
+            "version_installed": "1.0.19-r0",
+            "version_available": null
+        },
+        "libssh2": {
+            "status": "installed",
+            "version_installed": "1.11.0-r2",
+            "version_available": null
+        },
+        "libssl3": {
+            "status": "installed",
+            "version_installed": "3.3.2-r0",
+            "version_available": null
+        },
+        "libstdc++": {
+            "status": "installed",
+            "version_installed": "13.2.1_git20240309-r0",
+            "version_available": null
+        },
+        "libtasn1": {
+            "status": "installed",
+            "version_installed": "4.19.0-r2",
+            "version_available": null
+        },
+        "libunistring": {
+            "status": "installed",
+            "version_installed": "1.2-r0",
+            "version_available": null
+        },
+        "libuuid": {
+            "status": "installed",
+            "version_installed": "2.40.1-r1",
+            "version_available": null
+        },
+        "libzmq": {
+            "status": "installed",
+            "version_installed": "4.3.5-r2",
+            "version_available": null
+        },
+        "linux-firmware-none": {
+            "status": "installed",
+            "version_installed": "20240811-r0",
+            "version_available": null
+        },
+        "mdev-conf": {
+            "status": "installed",
+            "version_installed": "4.7-r0",
+            "version_available": null
+        },
+        "mkinitfs": {
+            "status": "installed",
+            "version_installed": "3.10.1-r0",
+            "version_available": null
+        },
+        "mpdecimal": {
+            "status": "installed",
+            "version_installed": "4.0.0-r0",
+            "version_available": null
+        },
+        "mtools": {
+            "status": "installed",
+            "version_installed": "4.0.43-r1",
+            "version_available": null
+        },
+        "musl": {
+            "status": "installed",
+            "version_installed": "1.2.5-r0",
+            "version_available": null
+        },
+        "musl-utils": {
+            "status": "installed",
+            "version_installed": "1.2.5-r0",
+            "version_available": null
+        },
+        "ncurses-terminfo-base": {
+            "status": "installed",
+            "version_installed": "6.4_p20240420-r1",
+            "version_available": null
+        },
+        "nettle": {
+            "status": "installed",
+            "version_installed": "3.9.1-r0",
+            "version_available": null
+        },
+        "openrc": {
+            "status": "installed",
+            "version_installed": "0.54-r1",
+            "version_available": null
+        },
+        "openssh-client-common": {
+            "status": "installed",
+            "version_installed": "9.7_p1-r4",
+            "version_available": null
+        },
+        "openssh-keygen": {
+            "status": "installed",
+            "version_installed": "9.7_p1-r4",
+            "version_available": null
+        },
+        "openssh-server": {
+            "status": "installed",
+            "version_installed": "9.7_p1-r4",
+            "version_available": null
+        },
+        "openssh-server-common": {
+            "status": "installed",
+            "version_installed": "9.7_p1-r4",
+            "version_available": null
+        },
+        "openssh-server-common-openrc": {
+            "status": "installed",
+            "version_installed": "9.7_p1-r4",
+            "version_available": null
+        },
+        "p11-kit": {
+            "status": "installed",
+            "version_installed": "0.25.3-r0",
+            "version_available": null
+        },
+        "pcre2": {
+            "status": "installed",
+            "version_installed": "10.43-r0",
+            "version_available": null
+        },
+        "procps-ng": {
+            "status": "installed",
+            "version_installed": "4.0.4-r0",
+            "version_available": null
+        },
+        "py3-cached-property": {
+            "status": "installed",
+            "version_installed": "1.5.2-r5",
+            "version_available": null
+        },
+        "py3-cached-property-pyc": {
+            "status": "installed",
+            "version_installed": "1.5.2-r5",
+            "version_available": null
+        },
+        "py3-certifi": {
+            "status": "installed",
+            "version_installed": "2024.2.2-r1",
+            "version_available": null
+        },
+        "py3-certifi-pyc": {
+            "status": "installed",
+            "version_installed": "2024.2.2-r1",
+            "version_available": null
+        },
+        "py3-cffi": {
+            "status": "installed",
+            "version_installed": "1.16.0-r1",
+            "version_available": null
+        },
+        "py3-cffi-pyc": {
+            "status": "installed",
+            "version_installed": "1.16.0-r1",
+            "version_available": null
+        },
+        "py3-charset-normalizer": {
+            "status": "installed",
+            "version_installed": "3.3.2-r1",
+            "version_available": null
+        },
+        "py3-charset-normalizer-pyc": {
+            "status": "installed",
+            "version_installed": "3.3.2-r1",
+            "version_available": null
+        },
+        "py3-cparser": {
+            "status": "installed",
+            "version_installed": "2.22-r1",
+            "version_available": null
+        },
+        "py3-cparser-pyc": {
+            "status": "installed",
+            "version_installed": "2.22-r1",
+            "version_available": null
+        },
+        "py3-dateutil": {
+            "status": "installed",
+            "version_installed": "2.9.0-r1",
+            "version_available": null
+        },
+        "py3-dateutil-pyc": {
+            "status": "installed",
+            "version_installed": "2.9.0-r1",
+            "version_available": null
+        },
+        "py3-distro": {
+            "status": "installed",
+            "version_installed": "1.9.0-r2",
+            "version_available": null
+        },
+        "py3-distro-pyc": {
+            "status": "installed",
+            "version_installed": "1.9.0-r2",
+            "version_available": null
+        },
+        "py3-idna": {
+            "status": "installed",
+            "version_installed": "3.7-r0",
+            "version_available": null
+        },
+        "py3-idna-pyc": {
+            "status": "installed",
+            "version_installed": "3.7-r0",
+            "version_available": null
+        },
+        "py3-jinja2": {
+            "status": "installed",
+            "version_installed": "3.1.4-r0",
+            "version_available": null
+        },
+        "py3-jinja2-pyc": {
+            "status": "installed",
+            "version_installed": "3.1.4-r0",
+            "version_available": null
+        },
+        "py3-jmespath": {
+            "status": "installed",
+            "version_installed": "1.0.1-r3",
+            "version_available": null
+        },
+        "py3-jmespath-pyc": {
+            "status": "installed",
+            "version_installed": "1.0.1-r3",
+            "version_available": null
+        },
+        "py3-looseversion": {
+            "status": "installed",
+            "version_installed": "1.3.0-r3",
+            "version_available": null
+        },
+        "py3-looseversion-pyc": {
+            "status": "installed",
+            "version_installed": "1.3.0-r3",
+            "version_available": null
+        },
+        "py3-markupsafe": {
+            "status": "installed",
+            "version_installed": "2.1.5-r1",
+            "version_available": null
+        },
+        "py3-markupsafe-pyc": {
+            "status": "installed",
+            "version_installed": "2.1.5-r1",
+            "version_available": null
+        },
+        "py3-msgpack": {
+            "status": "installed",
+            "version_installed": "1.0.8-r1",
+            "version_available": null
+        },
+        "py3-msgpack-pyc": {
+            "status": "installed",
+            "version_installed": "1.0.8-r1",
+            "version_available": null
+        },
+        "py3-packaging": {
+            "status": "installed",
+            "version_installed": "24.0-r1",
+            "version_available": null
+        },
+        "py3-packaging-pyc": {
+            "status": "installed",
+            "version_installed": "24.0-r1",
+            "version_available": null
+        },
+        "py3-parsing": {
+            "status": "installed",
+            "version_installed": "3.1.2-r1",
+            "version_available": null
+        },
+        "py3-parsing-pyc": {
+            "status": "installed",
+            "version_installed": "3.1.2-r1",
+            "version_available": null
+        },
+        "py3-psutil": {
+            "status": "installed",
+            "version_installed": "5.9.8-r1",
+            "version_available": null
+        },
+        "py3-psutil-pyc": {
+            "status": "installed",
+            "version_installed": "5.9.8-r1",
+            "version_available": null
+        },
+        "py3-pycryptodomex": {
+            "status": "installed",
+            "version_installed": "3.20.0-r1",
+            "version_available": null
+        },
+        "py3-pygit2": {
+            "status": "installed",
+            "version_installed": "1.14.1-r1",
+            "version_available": null
+        },
+        "py3-pygit2-pyc": {
+            "status": "installed",
+            "version_installed": "1.14.1-r1",
+            "version_available": null
+        },
+        "py3-pyzmq": {
+            "status": "installed",
+            "version_installed": "25.1.2-r1",
+            "version_available": null
+        },
+        "py3-pyzmq-pyc": {
+            "status": "installed",
+            "version_installed": "25.1.2-r1",
+            "version_available": null
+        },
+        "py3-requests": {
+            "status": "installed",
+            "version_installed": "2.32.3-r0",
+            "version_available": null
+        },
+        "py3-requests-pyc": {
+            "status": "installed",
+            "version_installed": "2.32.3-r0",
+            "version_available": null
+        },
+        "py3-six": {
+            "status": "installed",
+            "version_installed": "1.16.0-r9",
+            "version_available": null
+        },
+        "py3-six-pyc": {
+            "status": "installed",
+            "version_installed": "1.16.0-r9",
+            "version_available": null
+        },
+        "py3-tornado": {
+            "status": "installed",
+            "version_installed": "6.4-r2",
+            "version_available": null
+        },
+        "py3-tornado-pyc": {
+            "status": "installed",
+            "version_installed": "6.4-r2",
+            "version_available": null
+        },
+        "py3-urllib3": {
+            "status": "installed",
+            "version_installed": "1.26.18-r1",
+            "version_available": null
+        },
+        "py3-urllib3-pyc": {
+            "status": "installed",
+            "version_installed": "1.26.18-r1",
+            "version_available": null
+        },
+        "py3-yaml": {
+            "status": "installed",
+            "version_installed": "6.0.1-r3",
+            "version_available": null
+        },
+        "py3-yaml-pyc": {
+            "status": "installed",
+            "version_installed": "6.0.1-r3",
+            "version_available": null
+        },
+        "pyc": {
+            "status": "installed",
+            "version_installed": "3.12.7-r0",
+            "version_available": null
+        },
+        "python3": {
+            "status": "installed",
+            "version_installed": "3.12.7-r0",
+            "version_available": null
+        },
+        "python3-pyc": {
+            "status": "installed",
+            "version_installed": "3.12.7-r0",
+            "version_available": null
+        },
+        "python3-pycache-pyc0": {
+            "status": "installed",
+            "version_installed": "3.12.7-r0",
+            "version_available": null
+        },
+        "readline": {
+            "status": "installed",
+            "version_installed": "8.2.10-r0",
+            "version_available": null
+        },
+        "salt": {
+            "status": "installed",
+            "version_installed": "3007.0-r4",
+            "version_available": null
+        },
+        "salt-minion": {
+            "status": "installed",
+            "version_installed": "3007.0-r4",
+            "version_available": null
+        },
+        "salt-minion-openrc": {
+            "status": "installed",
+            "version_installed": "3007.0-r4",
+            "version_available": null
+        },
+        "salt-pyc": {
+            "status": "installed",
+            "version_installed": "3007.0-r4",
+            "version_available": null
+        },
+        "scanelf": {
+            "status": "installed",
+            "version_installed": "1.3.7-r2",
+            "version_available": null
+        },
+        "skalibs": {
+            "status": "installed",
+            "version_installed": "2.14.1.1-r0",
+            "version_available": null
+        },
+        "sqlite-libs": {
+            "status": "installed",
+            "version_installed": "3.45.3-r1",
+            "version_available": null
+        },
+        "ssl_client": {
+            "status": "installed",
+            "version_installed": "1.36.1-r29",
+            "version_available": null
+        },
+        "syslinux": {
+            "status": "installed",
+            "version_installed": "6.04_pre1-r15",
+            "version_available": null
+        },
+        "utmps-libs": {
+            "status": "installed",
+            "version_installed": "0.1.2.2-r1",
+            "version_available": null
+        },
+        "xz-libs": {
+            "status": "installed",
+            "version_installed": "5.6.2-r0",
+            "version_available": null
+        },
+        "yaml": {
+            "status": "installed",
+            "version_installed": "0.2.5-r2",
+            "version_available": null
+        },
+        "zlib": {
+            "status": "installed",
+            "version_installed": "1.3.1-r1",
+            "version_available": null
+        },
+        "zstd-libs": {
+            "status": "installed",
+            "version_installed": "1.5.6-r0",
+            "version_available": null
+        }
     }
 }
