@@ -53,8 +53,12 @@ class FileContext(FactBase):
 
     @override
     def process(self, output):
-        context = {}
+        if not output:
+            return None
         components = output[0].split(":")
+        if len(components) < 4:
+            return None
+        context = {}
         context["user"] = components[0]
         context["role"] = components[1]
         context["type"] = components[2]
