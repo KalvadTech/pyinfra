@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 from pyinfra.api import Config, Inventory
 from pyinfra.api.util import get_kwargs_str
+from pyinfra.facts.util.packages import PackageInfo, PackageStatus
 
 
 def get_command_string(command):
@@ -76,6 +77,13 @@ def parse_value(value):
         return [parse_value(value) for value in value]
 
     if isinstance(value, dict):
+        if value.get("__package_info__"):
+            return PackageInfo(
+                name=value.get("name", ""),
+                installed_versions=tuple(value.get("installed_versions", [])),
+                available_version=value.get("available_version"),
+                status=PackageStatus(value.get("status", "installed")),
+            )
         return {key: parse_value(value) for key, value in value.items()}
 
     return value

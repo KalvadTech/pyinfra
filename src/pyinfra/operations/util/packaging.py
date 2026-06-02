@@ -176,7 +176,7 @@ def _format_version(
 def ensure_packages(
     host: Host,
     packages_to_ensure: str | list[str] | list[PkgInfo] | None,
-    current_packages: dict[str, set[str]] | dict[str, PackageInfo],
+    current_packages: dict[str, set[str]] | dict[str, PackageInfo] | list[PackageInfo],
     present: bool,
     install_command: str | StringCommand,
     uninstall_command: str | StringCommand,
@@ -195,8 +195,8 @@ def ensure_packages(
     + Outputs commands to ensure our desired packages/versions
     + Optionally upgrades packages w/o specified version when present
 
-    When ``current_packages`` values are :class:`PackageInfo` objects, the richer
-    status information is used:
+    ``current_packages`` may be the new ``list[PackageInfo]`` (or a name-keyed
+    ``dict[str, PackageInfo]``), in which case the richer status is used:
 
     * **HELD** packages always produce a noop, even when ``latest=True``.
     * **UPGRADEABLE** packages are upgraded when ``latest=True``.
@@ -225,6 +225,11 @@ def ensure_packages(
         packages_to_ensure = [packages_to_ensure]
     if len(packages_to_ensure) == 0:
         return
+
+    # A PackageFactBase fact returns a flat list[PackageInfo]; index it by name
+    # so the lookups below work the same as for the dict-shaped facts.
+    if isinstance(current_packages, list):
+        current_packages = {info.name: info for info in current_packages}
 
     packages: list[PkgInfo] = []
     if isinstance(packages_to_ensure[0], PkgInfo):

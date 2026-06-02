@@ -51,20 +51,28 @@ class TestPackageInfo(TestCase):
 
 
 class TestBuildPackageMap(TestCase):
+    @staticmethod
+    def _by_name(result):
+        return {info.name: info for info in result}
+
     def test_only_installed(self):
         result = build_package_map({"vim": {"9.0"}, "git": {"2.40"}})
-        assert set(result.keys()) == {"vim", "git"}
-        assert result["vim"] == PackageInfo(
+        # build_package_map returns a list sorted by name.
+        assert [info.name for info in result] == ["git", "vim"]
+        by_name = self._by_name(result)
+        assert by_name["vim"] == PackageInfo(
             name="vim", installed_versions=("9.0",), status=PackageStatus.INSTALLED
         )
-        assert result["git"] == PackageInfo(
+        assert by_name["git"] == PackageInfo(
             name="git", installed_versions=("2.40",), status=PackageStatus.INSTALLED
         )
 
     def test_marks_upgradeable(self):
-        result = build_package_map(
-            installed={"vim": {"9.0"}, "git": {"2.40"}},
-            upgradeable={"vim": "9.1"},
+        result = self._by_name(
+            build_package_map(
+                installed={"vim": {"9.0"}, "git": {"2.40"}},
+                upgradeable={"vim": "9.1"},
+            )
         )
         assert result["vim"].status == PackageStatus.UPGRADEABLE
         assert result["vim"].available_version == "9.1"
@@ -72,23 +80,27 @@ class TestBuildPackageMap(TestCase):
         assert result["git"].available_version is None
 
     def test_marks_held(self):
-        result = build_package_map(
-            installed={"vim": {"9.0"}, "git": {"2.40"}},
-            held={"vim"},
+        result = self._by_name(
+            build_package_map(
+                installed={"vim": {"9.0"}, "git": {"2.40"}},
+                held={"vim"},
+            )
         )
         assert result["vim"].status == PackageStatus.HELD
 
     def test_held_takes_precedence_over_upgradeable(self):
-        result = build_package_map(
-            installed={"vim": {"9.0"}},
-            upgradeable={"vim": "9.1"},
-            held={"vim"},
+        result = self._by_name(
+            build_package_map(
+                installed={"vim": {"9.0"}},
+                upgradeable={"vim": "9.1"},
+                held={"vim"},
+            )
         )
         assert result["vim"].status == PackageStatus.HELD
         assert result["vim"].available_version == "9.1"
 
     def test_handles_empty_versions(self):
-        result = build_package_map({"foo": set()})
+        result = self._by_name(build_package_map({"foo": set()}))
         assert result["foo"].installed_versions == ()
         assert result["foo"].installed_version is None
 
@@ -97,8 +109,8 @@ class TestBuildPackageMap(TestCase):
         # with a natural-order key. Lexicographically this set sorts to
         # ("5.10.0-26", "5.10.0-9", ...) because '2' < '9'; natural order must
         # rank -9 below -26 and put the highest version last.
-        result = build_package_map(
-            {"linux-image": {"6.1.0-13", "6.1.0-12", "5.10.0-26", "5.10.0-9"}}
+        result = self._by_name(
+            build_package_map({"linux-image": {"6.1.0-13", "6.1.0-12", "5.10.0-26", "5.10.0-9"}})
         )
         info = result["linux-image"]
         assert info.installed_versions == ("5.10.0-9", "5.10.0-26", "6.1.0-12", "6.1.0-13")
@@ -107,7 +119,7 @@ class TestBuildPackageMap(TestCase):
     def test_multiple_versions_natural_order_beats_lexicographic(self):
         # Lexicographic sort of this set is ["1.10", "1.2", "1.9"]; the
         # natural-order key must instead yield 1.2 < 1.9 < 1.10.
-        result = build_package_map({"libfoo": {"1.10", "1.2", "1.9"}})
+        result = self._by_name(build_package_map({"libfoo": {"1.10", "1.2", "1.9"}}))
         info = result["libfoo"]
         assert info.installed_versions == ("1.2", "1.9", "1.10")
         assert info.installed_version == "1.10"
