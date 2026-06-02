@@ -1,0 +1,22 @@
+command: pkg info 2> /dev/null || true
+facts:
+  freebsd.PkgUpgradeablePackages:
+    jail=None:
+      nano: "4.0"
+  freebsd.PkgLockedPackages:
+    jail=None:
+      - vim-addon-manager
+output: |
+  nano-3.48
+  vim-addon-manager-0.5.10
+fact:
+  - name: nano
+    installed_versions:
+      - "3.48"
+    available_version: "4.0"
+    status: upgradeable
+  - name: vim-addon-manager
+    installed_versions:
+      - "0.5.10"
+    available_version: null
+    status: held

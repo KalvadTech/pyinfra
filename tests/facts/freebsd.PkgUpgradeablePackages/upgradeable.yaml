@@ -1,0 +1,10 @@
+command: pkg version -v -R || true
+output: |
+  curl-7.88.1                        <   needs updating (remote has 8.0.1)
+  nano-3.48                          <   needs updating (remote has 4.0)
+  openssl-3.0.8                      =   up-to-date with remote
+  vim-addon-manager-0.5.10           <   needs updating (remote has 0.5.11)
+fact:
+  curl: "8.0.1"
+  nano: "4.0"
+  vim-addon-manager: "0.5.11"

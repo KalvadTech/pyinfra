@@ -1,0 +1,8 @@
+arg:
+  jail: nginx
+command: pkg -j nginx version -v -R || true
+output: |
+  nano-3.48                          <   needs updating (remote has 4.0)
+  openssl-3.0.8                      =   up-to-date with remote
+fact:
+  nano: "4.0"

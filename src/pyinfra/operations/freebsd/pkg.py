@@ -7,7 +7,9 @@ from __future__ import annotations
 
 from pyinfra import host
 from pyinfra.api import QuoteString, StringCommand, operation
-from pyinfra.facts.freebsd import PkgPackage
+from pyinfra.facts.freebsd import PkgLockedPackages, PkgPackage, PkgPackages
+
+from pyinfra.operations.util.packaging import ensure_packages
 
 
 @operation()
@@ -214,5 +216,116 @@ def clean(all_pkg: bool = False, jail: str | None = None):
 
     if all_pkg:
         args.append("-a")
+
+    yield StringCommand(*args)
+
+
+@operation()
+def packages(
+    packages: str | list[str] | None = None,
+    present: bool = True,
+    latest: bool = False,
+    jail: str | None = None,
+    reponame: str | None = None,
+):
+    """
+    Install/remove/upgrade multiple packages, checking installed, upgradeable
+    and locked state. Locked packages are never changed, and ``latest`` only
+    upgrades packages that actually have an available upgrade.
+
+    + packages: list of packages to ensure
+    + present: whether the packages should be installed
+    + latest: whether to upgrade packages without a specified version
+    + jail: See ``-j`` in ``pkg(8)``.
+    + reponame: See ``-r`` in ``pkg-install(8)``/``pkg-upgrade(8)``.
+
+    **Example:**
+
+    .. code:: python
+
+        from pyinfra.operations import freebsd
+
+        freebsd.pkg.packages(
+            name="Install nginx and vim",
+            packages=["nginx", "vim"],
+        )
+    """
+
+    def _command(*action: str | QuoteString, with_repo: bool = False) -> StringCommand:
+        bits: list[str | QuoteString] = ["pkg"]
+        if jail is not None:
+            bits.extend(["-j", QuoteString(jail)])
+        bits.extend(action)
+        if with_repo and reponame is not None:
+            bits.extend(["-r", QuoteString(reponame)])
+        bits.append("--")
+        return StringCommand(*bits)
+
+    yield from ensure_packages(
+        host,
+        packages,
+        host.get_fact(PkgPackages, jail=jail),
+        present,
+        install_command=_command("install", "-y", with_repo=True),
+        uninstall_command=_command("delete", "-y"),
+        latest=latest,
+        upgrade_command=_command("upgrade", "-y", with_repo=True),
+    )
+
+
+@operation()
+def lock(package: str, jail: str | None = None):
+    """
+    Lock a package to prevent it being reinstalled, upgraded or removed.
+
+    + package: Package to lock.
+    + jail: See ``-j`` in ``pkg(8)``.
+
+    **Example:**
+
+    .. code:: python
+
+        pkg.lock("nginx")
+    """
+
+    if package in host.get_fact(PkgLockedPackages, jail=jail):
+        host.noop(f"Package '{package}' is already locked")
+        return
+
+    args: list[str | QuoteString] = ["pkg"]
+
+    if jail is not None:
+        args.extend(["-j", QuoteString(jail)])
+
+    args.extend(["lock", "-y", "--", QuoteString(package)])
+
+    yield StringCommand(*args)
+
+
+@operation()
+def unlock(package: str, jail: str | None = None):
+    """
+    Unlock a package previously locked with ``pkg.lock``.
+
+    + package: Package to unlock.
+    + jail: See ``-j`` in ``pkg(8)``.
+
+    **Example:**
+
+    .. code:: python
+
+        pkg.unlock("nginx")
+    """
+
+    if package not in host.get_fact(PkgLockedPackages, jail=jail):
+        host.noop(f"Package '{package}' is not locked")
+        return
+
+    args: list[str | QuoteString] = ["pkg"]
+
+    if jail is not None:
+        args.extend(["-j", QuoteString(jail)])
+
+    args.extend(["unlock", "-y", "--", QuoteString(package)])
 
     yield StringCommand(*args)

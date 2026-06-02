@@ -1,0 +1,14 @@
+args:
+  - nano
+kwargs:
+  present: false
+facts:
+  freebsd.PkgPackages:
+    jail=None:
+      - __package_info__: true
+        name: nano
+        installed_versions:
+          - "3.48"
+        status: installed
+commands:
+  - pkg delete -y -- nano

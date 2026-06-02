@@ -1,0 +1,15 @@
+args:
+  - nano
+kwargs:
+  latest: true
+facts:
+  freebsd.PkgPackages:
+    jail=None:
+      - __package_info__: true
+        name: nano
+        installed_versions:
+          - "3.48"
+        available_version: "4.0"
+        status: held
+commands: []
+noop_description: package nano is held

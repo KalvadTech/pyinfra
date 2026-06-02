@@ -1,0 +1,7 @@
+arg:
+  jail: nginx
+command: pkg -j nginx lock -lq || true
+output: |
+  nano-3.48
+fact:
+  - nano

@@ -1,0 +1,8 @@
+args:
+  - nginx
+facts:
+  freebsd.PkgLockedPackages:
+    jail=None:
+      - nginx
+commands:
+  - pkg unlock -y -- nginx

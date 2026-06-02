@@ -1,0 +1,9 @@
+args:
+  - nginx
+kwargs:
+  jail: web
+facts:
+  freebsd.PkgLockedPackages:
+    jail=web: []
+commands:
+  - pkg -j web lock -y -- nginx

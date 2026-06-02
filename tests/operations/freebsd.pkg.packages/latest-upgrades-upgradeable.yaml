@@ -1,0 +1,15 @@
+args:
+  - nano
+kwargs:
+  latest: true
+facts:
+  freebsd.PkgPackages:
+    jail=None:
+      - __package_info__: true
+        name: nano
+        installed_versions:
+          - "3.48"
+        available_version: "4.0"
+        status: upgradeable
+commands:
+  - pkg upgrade -y -- nano

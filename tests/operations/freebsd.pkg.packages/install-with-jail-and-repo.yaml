@@ -1,0 +1,10 @@
+args:
+  - screen
+kwargs:
+  jail: web
+  reponame: custom
+facts:
+  freebsd.PkgPackages:
+    jail=web: []
+commands:
+  - pkg -j web install -y -r custom -- screen

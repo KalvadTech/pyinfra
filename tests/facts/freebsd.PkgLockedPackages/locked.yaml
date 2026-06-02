@@ -1,0 +1,7 @@
+command: pkg lock -lq || true
+output: |
+  nano-3.48
+  vim-addon-manager-0.5.10
+fact:
+  - nano
+  - vim-addon-manager

@@ -1,0 +1,8 @@
+args:
+  - - nginx
+    - vim
+facts:
+  freebsd.PkgPackages:
+    jail=None: []
+commands:
+  - pkg install -y -- nginx vim

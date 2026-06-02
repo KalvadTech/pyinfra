@@ -1,0 +1,16 @@
+arg:
+  jail: nginx
+command: pkg -j nginx info 2> /dev/null || true
+facts:
+  freebsd.PkgUpgradeablePackages:
+    jail=nginx: {}
+  freebsd.PkgLockedPackages:
+    jail=nginx: []
+output: |
+  nano-3.48
+fact:
+  - name: nano
+    installed_versions:
+      - "3.48"
+    available_version: null
+    status: installed

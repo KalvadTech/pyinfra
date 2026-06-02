@@ -1,0 +1,8 @@
+args:
+  - nginx
+facts:
+  freebsd.PkgLockedPackages:
+    jail=None:
+      - nginx
+commands: []
+noop_description: "Package 'nginx' is already locked"
