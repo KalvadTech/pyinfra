@@ -4,6 +4,9 @@ extend-exclude = [
     "tests/facts/opkg.OpkgPackages/opkg_packages.json",
     "tests/words.txt",
     "tests/facts/gpg.GpgKeyrings/*.json",  # GPG keyring test files contain hex key IDs
+    "tests/facts/gpg.GpgKeys/*.json",  # GPG key test files contain trust-db "tru:" lines
+    "tests/facts/gpg.GpgSecretKeys/*.json",
+    "tests/facts/apt.AptKeys/*.json",
 ]
 
 [default]
