@@ -811,7 +811,9 @@ def sync(
 
 @memoize
 def show_rsync_warning() -> None:
-    logger.warning("The `files.rsync` operation is in alpha!")
+    logger.warning(
+        "The `files.rsync` operation is in alpha and deletes extra remote files by default!"
+    )
 
 
 @operation(is_idempotent=False)
@@ -824,6 +826,10 @@ def rsync(src: str, dest: str, flags: list[str] | None = None):
         The ``files.rsync`` operation is in alpha, and only supported using SSH
         or ``@local`` connectors. When using the SSH connector, rsync will automatically use the
         StrictHostKeyChecking setting, config and known_hosts file (when specified).
+
+    .. warning::
+        The default flags are ``["-ax", "--delete"]``, so remote files missing from ``src`` are
+        deleted. Pass ``flags=["-ax"]`` to preserve extra remote files.
 
     .. caution::
         When using SSH, the ``files.rsync`` operation only supports the ``sudo``, ``sudo_user``,
@@ -1035,8 +1041,9 @@ def put(
     + mtime: value of mtime the file should have, use ``True`` to match the local file
 
     ``dest``:
-        If this is a directory that already exists on the remote side, the local
-        file will be uploaded to that directory with the same filename.
+        If this is a directory that already exists on the remote side, or the
+        destination ends with a trailing slash, the file will be uploaded to
+        that directory with the same filename.
 
     ``mode``:
         When set to ``True`` the permissions of the local file are applied to the
@@ -1131,7 +1138,9 @@ def put(
 
     remote_file = host.get_fact(File, path=dest)
 
-    if not remote_file and bool(host.get_fact(Directory, path=dest)):
+    if not remote_file and (
+        (isinstance(dest, str) and dest.endswith("/")) or bool(host.get_fact(Directory, path=dest))
+    ):
         # A file-like ``src`` has no filename to append to the directory, so the
         # destination is ambiguous. Raise a clear error rather than a bare
         # ``AssertionError`` from the ``isinstance`` check below (#1144).
@@ -1140,6 +1149,7 @@ def put(
                 "When `src` is a file-like object, `dest` must be a full file "
                 "path, not a directory",
             )
+
         dest = unix_path_join(dest, Path(src).name)
         remote_file = host.get_fact(File, path=dest)
 
@@ -1198,19 +1208,23 @@ def put(
         if not _file_equal(local_sum_path, dest):
             if state.config.DIFF:
                 # Generate diff when contents change
-                current_contents = host.get_fact(FileContents, path=dest)
-                if current_contents:
-                    current_lines = [line + "\n" for line in current_contents]
-                else:
-                    current_lines = []
-
                 host.log(f"Will modify {format_text(dest, bold=True)}", logger.info)
 
-                with get_file_io(src, "r") as f:
-                    desired_lines = f.readlines()
+                try:
+                    with get_file_io(src, "r") as f:
+                        desired_lines = f.readlines()
+                except UnicodeDecodeError:
+                    # Not fetching the remote contents here avoids hanging on a binary file
+                    logger.info("Binary file modified")
+                else:
+                    current_contents = host.get_fact(FileContents, path=dest)
+                    if current_contents:
+                        current_lines = [line + "\n" for line in current_contents]
+                    else:
+                        current_lines = []
 
-                for line in generate_color_diff(current_lines, desired_lines):
-                    logger.info("  %s", line)
+                    for line in generate_color_diff(current_lines, desired_lines):
+                        logger.info("  %s", line)
                 logger.info("")
 
             yield FileUploadCommand(
@@ -1982,6 +1996,7 @@ def block(
     marker: str | None = None,
     begin: str | None = None,
     end: str | None = None,
+    preserve_meta: bool = True,
 ):
     """
     Ensure content, surrounded by the appropriate markers, is present (or not) in the file.
@@ -1999,6 +2014,13 @@ def block(
     + marker: the base string used to mark the text.  Default is ``# {mark} PYINFRA BLOCK``
     + begin: the value for ``{mark}`` in the marker before the content. Default is ``BEGIN``
     + end: the value for ``{mark}`` in the marker after the content. Default is ``END``
+    + preserve_meta: whether to restore the file's owner, group and mode after rewriting it.
+      Default ``True`` (today's behaviour on an existing file). Set to ``False`` on a host
+      where the executing user may not ``chown`` the target. Has no effect when the file does
+      not yet exist: there is nothing to restore in that case either way. When ``False`` on an
+      existing file, the rewrite replaces the file rather than editing it in place, so the file
+      is left with the temporary file's mode (``0600``) and the executing user's ownership
+      instead of its original owner, group and mode.
 
     Content appended if ``line`` not found in the file
         If ``content`` is not in the file but is required (``present=True``) and ``line`` is not
@@ -2084,31 +2106,42 @@ def block(
     # standard awk doesn't have an "in-place edit" option so we write to a tempfile and
     # if edits were successful move to dest i.e. we do: <out_prep> ... do some work ... <real_out>
     q_path = QuoteString(path)
+    # Nothing to restore when the file doesn't exist yet (there is no prior owner, group or
+    # mode to preserve), and preserve_meta lets the caller decline the restore even when the
+    # file does exist, for hosts where the executing user may not chown the target.
+    restore_meta = preserve_meta and current is not None
     mode_get = (
-        ""
-        if current is None
-        else (
+        (
             'MODE="$(stat -c %a',
             q_path,
             "2>/dev/null || stat -f %Lp",
             q_path,
             '2>/dev/null)" &&',
         )
+        if restore_meta
+        else ""
+    )
+    owner_get = (
+        (
+            'OWNER="$(stat -c "%u:%g"',
+            q_path,
+            '2>/dev/null || stat -f "%u:%g"',
+            q_path,
+            '2>/dev/null || echo $(id -un):$(id -gn))" &&',
+        )
+        if restore_meta
+        else ""
     )
     out_prep = StringCommand(
         f'OUT="$(TMPDIR={tmp_dir} mktemp -t pyinfra.XXXXXX)" && ',
         *mode_get,
-        'OWNER="$(stat -c "%u:%g"',
-        q_path,
-        '2>/dev/null || stat -f "%u:%g"',
-        q_path,
-        '2>/dev/null || echo $(id -un):$(id -gn))" &&',
+        *owner_get,
     )
 
-    mode_change = "" if current is None else ' && chmod "$MODE"'
-    real_out = StringCommand(
-        ' && mv "$OUT"', q_path, ' && chown "$OWNER"', q_path, mode_change, q_path
+    meta_restore = (
+        (' && chown "$OWNER"', q_path, ' && chmod "$MODE"', q_path) if restore_meta else ()
     )
+    real_out = StringCommand(' && mv "$OUT"', q_path, *meta_restore)
 
     if backup and (current is not None):  # can't back up something that doesn't exist
         out_prep = StringCommand(
